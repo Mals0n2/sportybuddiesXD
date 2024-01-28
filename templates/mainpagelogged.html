@@ -1,0 +1,82 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Include jQuery library -->
+
+<style>
+    /* Styl dla opisu zdjęcia profilowego */
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-description {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+        border-radius: 35%;
+        text-align: center;
+        display: none; /* Ukryj opis na początku */
+    }
+
+    .profile-picture-container:hover .profile-description {
+        display: block; /* Wyświetl opis po najechaniu kursorem */
+    }
+</style>
+
+<div class="body-main">
+    <div class="text-container">
+        <h1>Wybierz swojego partnera do treningu!</h1>
+    </div>
+
+    <div class="circle-container">
+        <div class="circle-left">
+            <img src="data:image/jpeg;base64,{{ current_user_photo }}" class="mainpage-pic">
+            <div class="name-container">
+                <h1>{{current_user.name}}<span class="small-font">{{current_user.age}}</span></h1>
+                {% for sport_icon in current_sport_icons %}
+                {% if sport_icon|length >= 1 %}
+                <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="white-square">
+            <a href="{{ url_for('mainpagelogged',next_match=1) }}">
+                <div class="small-circle">
+                    <i class=" fas fa-check"></i>
+                </div>
+            </a>
+            <a href="{{ url_for('mainpagelogged',next_match=0) }}">
+                <div class="small-circle2">
+                    <i class=" fas fa-times"></i>
+                </div>
+            </a>
+        </div>
+
+        <div class="circle-right">
+            <div class="profile-picture-container">
+                <div class="profile-description">{{ matched_user.info }}</div>
+                <img src="data:image/jpeg;base64,{{ matched_user_photo }}" class="mainpage-pic">
+
+            </div>
+            <div class="name-container">
+                <h1>{{matched_user.name}}<span class="small-font">{{matched_user.age}}, {{distance}}</span></h1>
+                {% for sport_icon in matched_sport_icons %}
+                {% if sport_icon|length >= 1 %}
+                <div class="smaller-circle"><i class="{{ sport_icon[0] }}"></i></div>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+            </div>
+        </div>
+    {% endblock %}
